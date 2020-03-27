@@ -15,8 +15,7 @@ module.exports = async({ studiosToCreate = 10, actorsToCreate = 50 } = {}) => {
 
   const actors = await Actor.create([...Array(actorsToCreate)].map(() => ({
     name: chance.name(),
-    dob: chance.date(),
+    dob: chance.birthday(),
     pob: chance.city()
   })));
-  
 };
