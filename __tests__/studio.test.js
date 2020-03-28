@@ -1,5 +1,5 @@
-
 const { getStudio, getStudios } = require('../db/data-helpers');
+const chance = require('chance').Chance();
 const request = require('supertest');
 const app = require('../lib/app');
 
@@ -9,21 +9,21 @@ describe('studios routes', () => {
     return request(app)
       .post('/api/v1/studios')
       .send({
-        name: 'Warner Bros',
+        name: chance.company(),
         address: {
-          city: 'Los Angeles',
-          state: 'California',
-          country: 'USA'
+          city: chance.city(),
+          state: chance.state(),
+          country: chance.country()
         }
       })
       .then(res => {
         expect(res.body).toEqual({
           _id: expect.any(String),
-          name: 'Warner Bros',
+          name: expect.any(String),
           address: {
-            city: 'Los Angeles',
-            state: 'California',
-            country: 'USA'
+            city: expect.any(String),
+            state: expect.any(String),
+            country: expect.any(String),
           },
           __v: 0
         });

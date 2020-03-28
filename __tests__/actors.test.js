@@ -1,8 +1,8 @@
 const { getActor, getActors } = require('../db/data-helpers');
-
+const chance = require('chance').Chance();
 const request = require('supertest');
 const app = require('../lib/app');
-const chance = require('chance');
+
 
 describe('actors routes', () => {
 
@@ -10,14 +10,14 @@ describe('actors routes', () => {
     return request(app)
       .post('/api/v1/actors')
       .send({
-        name: 'Bob Marley',
-        dob: new Date,
+        name: chance.name(),
+        dob: chance.birthday(),
         pob: 'Jamjam'
       })
       .then(res => {
         expect(res.body).toEqual({
           _id: expect.any(String),
-          name: 'Bob Marley',
+          name: expect.any(String),
           dob: expect.any(String),
           pob: 'Jamjam',
           __v: 0
