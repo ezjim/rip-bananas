@@ -60,6 +60,7 @@ describe('films routes', () => {
           delete actor.dob;
           delete actor.pob;
           delete actor.__v;
+          delete actor.id;
           film.cast.forEach(role => {
             if(role.actor === actor._id) {
               role.actor = actor;
@@ -67,7 +68,6 @@ describe('films routes', () => {
           });
         });
         
-        delete film._id;
         delete film.__v;
         expect(res.body).toEqual({ 
           ...film, 

@@ -1,4 +1,4 @@
-const { getStudio, getStudios } = require('../db/data-helpers');
+const { getStudio, getStudios, getFilms } = require('../db/data-helpers');
 const chance = require('chance').Chance();
 const request = require('supertest');
 const app = require('../lib/app');
@@ -46,11 +46,23 @@ describe('studios routes', () => {
 
   it('gets a studio by id', async() => {
     const studio = await getStudio();
-
+    const films = await getFilms();
+    let studioFilms = [];
+    films.forEach(film => {
+      if(film.studio === studio._id) {
+        delete film.cast;
+        delete film.studio;
+        delete film.released;
+        delete film.__v;
+        studioFilms.push(film);
+      }
+    });
     return request(app)
       .get(`/api/v1/studios/${studio._id}`)
       .then(res => {
-        expect(res.body).toEqual(studio);
+        /*  delete studio.__v; */
+        expect(res.body).toEqual({ ...studio, films: studioFilms });
       });
   });
+  
 });
